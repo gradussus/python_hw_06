@@ -3,7 +3,9 @@ import shutil
 import sys
 import re
 
+
 def transliteration (text):
+
     dict = {
 
         'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'e', 'ж': 'zh',
@@ -18,7 +20,6 @@ def transliteration (text):
     }
     newName = ''
     for letter in text:
-        print (letter)
         if re.match(r'[a-zA-Z0-9.]', letter):
             newName += letter
         elif letter in dict:
@@ -27,8 +28,10 @@ def transliteration (text):
             newName += '_'
     return newName
 
-def handle_files():
+
+def handle_files(starting_directory):
     return
+
 
 def goClean():
     if len(sys.argv) != 2:
