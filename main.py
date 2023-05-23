@@ -31,7 +31,7 @@ def transliteration (text):
 
 
 def handle_files(starting_directory):
-    Path(starting_directory)
+    init_path = Path(starting_directory)
     return
 
 
