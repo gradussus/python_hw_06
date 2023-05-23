@@ -17,7 +17,7 @@ def transliteration (text):
         'Ж': 'ZH', 'З': 'Z', 'И': 'I', 'Й': 'Y', 'К': 'K', 'Л': 'L', 'М': 'M', 'Н': 'N',
         'О': 'O', 'П': 'P', 'Р': 'R', 'С': 'S', 'Т': 'T', 'У': 'U', 'Ф': 'F', 'Х': 'H',
         'Ц': 'C', 'Ч': 'CH', 'Ш': 'SH', 'Щ': 'SCH', 'Ъ': '', 'Ы': 'Y', 'Ь': '', 'Э': 'E',
-        'Ю': 'YU', 'Я': 'YA'
+        'Ю': 'YU', 'Я': 'YA', 'Ї': 'YI', 'ї': 'yi', 'Є': 'YE', 'є': 'ye'
     }
     newName = ''
     for letter in text:
@@ -42,4 +42,3 @@ def goClean(args):
         handle_files(args[1])
 
 goClean(sys.argv)
-
