@@ -1,7 +1,8 @@
 import os
+import re
 import shutil
 import sys
-import re
+from pathlib import Path
 
 
 def transliteration (text):
@@ -30,14 +31,15 @@ def transliteration (text):
 
 
 def handle_files(starting_directory):
+    Path(starting_directory)
     return
 
 
-def goClean():
-    if len(sys.argv) != 2:
+def goClean(args):
+    if len(args) != 2:
         return
     else:
-        handle_files(sys.argv[1])
+        handle_files(args[1])
 
-goClean()
+goClean(sys.argv)
 
