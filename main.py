@@ -4,31 +4,11 @@ import shutil
 import sys
 from pathlib import Path
 
-def walk (path, level=1):
+def walk (path):
 
-    # print('Level =', level,'  --------    ', 'Content:', os.listdir(path))
     for i in os.listdir(path):
         if os.path.isdir(path + '\\' + i):
-            walk(path + '\\' + i, level + 1)
-            # print('Спускаемся', path + '\\' + i)
-            # print('Возвращаемся в', path)
-
-    # os.chdir(path)
-
-    # list_dir = list(filter(os.path.isdir, os.listdir()))
-    # print(os.getcwd())
-    # print(list_dir)
-
-    # for p in list_dir:
-    #     print(list_dir)
-    #     # print(list_dir)
-    #     print(p)
-    #     walk(p)
-
-    # os.chdir(list_dir[0])
-    # print(list_dir)
-
-
+            walk(path + '\\' + i)
 
 
 walk(r'C:\Users\shevc\Desktop\XXX')
