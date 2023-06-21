@@ -26,18 +26,16 @@ def walk (path, init_path):
 
 
 def move_file(old_folder, filename, init_path ):
-    for i in known_extensions:
-        print(i)
-    
+    for type in known_extensions: 
 
-        if filename.endswith(known_extensions[i]):
+        if filename.endswith(known_extensions[type]):
 
             old_file = os.path.join(old_folder, filename)
 
-            if not os.path.exists(os.path.join(init_path, i)):
-                os.makedirs(os.path.join(init_path, i))
+            if not os.path.exists(os.path.join(init_path, type)):
+                os.makedirs(os.path.join(init_path, type))
 
-            new_file = os.path.join(init_path, i , transliteration(filename))
+            new_file = os.path.join(init_path, type , transliteration(filename))
             
             os.rename(old_file, new_file)
 
