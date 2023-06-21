@@ -15,29 +15,46 @@ known_extensions = {
 unknown_extensions = set()
 
 def walk (path, init_path):
+    if os.listdir(path) == []:
+        os.rmdir(path)
 
-    for i in os.listdir(path):
-        
-        # print(i)
-        if os.path.isdir(os.path.join(path, i)):
-            walk(os.path.join(path, i), init_path)
-        else:
-            move_file(path, i, init_path)
+    else:
 
+        for i in os.listdir(path):
+            
+            # print(i)
+            if os.path.isdir(os.path.join(path, i)):
+                walk(os.path.join(path, i), init_path)
+
+            else:
+                move_file(path, i, init_path)
+                if os.listdir(path) == []:
+                    print(os.listdir(path))
+                    os.rmdir(path)
 
 def move_file(old_folder, filename, init_path ):
     for type in known_extensions: 
 
         if filename.endswith(known_extensions[type]):
+            
 
             old_file = os.path.join(old_folder, filename)
 
             if not os.path.exists(os.path.join(init_path, type)):
                 os.makedirs(os.path.join(init_path, type))
 
-            new_file = os.path.join(init_path, type , transliteration(filename))
+            if type == 'archives':
+                translit = transliteration(filename)
+                fname = translit.split('.')[0]
+                shutil.unpack_archive((os.path.join(old_folder, filename)), (os.path.join(init_path, 'archives', fname)) )
+            else:
+
+                new_file = os.path.join(init_path, type , transliteration(filename))
+                
+                os.rename(old_file, new_file)
+        else:
             
-            os.rename(old_file, new_file)
+            continue
 
 # walk(r'C:\Users\shevc\Desktop\XXX')
 
