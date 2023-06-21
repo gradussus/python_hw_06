@@ -2,9 +2,8 @@ import os
 import re
 import shutil
 import sys
-from pathlib import Path
 
-known_extensions = {
+extensions = {
     'images': ('jpeg', 'png', 'jpg', 'svg'),
     'videos': ('avi', 'mp4', 'mov', 'mkv'),
     'documents': ('doc', 'docx', 'txt', 'pdf', 'xlsx', 'pptx'),
@@ -13,6 +12,7 @@ known_extensions = {
     }
 
 unknown_extensions = set()
+known_extensions = set()
 
 def walk (path, init_path):
     if os.listdir(path) == []:
@@ -20,41 +20,76 @@ def walk (path, init_path):
 
     else:
 
-        for i in os.listdir(path):
+        for item in os.listdir(path):
+            if item in extensions:
+                continue
             
-            # print(i)
-            if os.path.isdir(os.path.join(path, i)):
-                walk(os.path.join(path, i), init_path)
+            if os.path.isdir(os.path.join(path, item)):
+                walk(os.path.join(path, item), init_path)
 
             else:
-                move_file(path, i, init_path)
-                if os.listdir(path) == []:
-                    print(os.listdir(path))
-                    os.rmdir(path)
+                move_file(path, item, init_path)
 
 def move_file(old_folder, filename, init_path ):
-    for type in known_extensions: 
+ 
 
-        if filename.endswith(known_extensions[type]):
+    if filename.endswith(extensions['images']):
+         
+        known_extensions.add(filename.split('.')[-1])
             
+        old_file = os.path.join(old_folder, filename)
+        new_file = os.path.join(init_path, 'images' , transliteration(filename))
 
-            old_file = os.path.join(old_folder, filename)
-
-            if not os.path.exists(os.path.join(init_path, type)):
-                os.makedirs(os.path.join(init_path, type))
-
-            if type == 'archives':
-                translit = transliteration(filename)
-                fname = translit.split('.')[0]
-                shutil.unpack_archive((os.path.join(old_folder, filename)), (os.path.join(init_path, 'archives', fname)) )
-            else:
-
-                new_file = os.path.join(init_path, type , transliteration(filename))
+        if not os.path.exists(os.path.join(init_path, 'images')):
+            os.makedirs(os.path.join(init_path, 'images'))
                 
-                os.rename(old_file, new_file)
-        else:
+        os.rename(old_file, new_file)
+
+    elif filename.endswith(extensions['videos']):
+         
+        known_extensions.add(filename.split('.')[-1])
             
-            continue
+        old_file = os.path.join(old_folder, filename)
+        new_file = os.path.join(init_path, 'videos' , transliteration(filename))
+
+        if not os.path.exists(os.path.join(init_path, 'videos')):
+            os.makedirs(os.path.join(init_path, 'videos'))
+    
+        os.rename(old_file, new_file)
+
+    elif filename.endswith(extensions['documents']):
+         
+        known_extensions.add(filename.split('.')[-1])
+            
+        old_file = os.path.join(old_folder, filename)
+        new_file = os.path.join(init_path, 'documents' , transliteration(filename))
+
+        if not os.path.exists(os.path.join(init_path, 'documents')):
+            os.makedirs(os.path.join(init_path, 'documents'))
+
+        os.rename(old_file, new_file)
+
+    elif filename.endswith(extensions['music']):
+         
+        known_extensions.add(filename.split('.')[-1])
+            
+        old_file = os.path.join(old_folder, filename)
+        new_file = os.path.join(init_path, 'music' , transliteration(filename))
+
+        if not os.path.exists(os.path.join(init_path, 'music')):
+            os.makedirs(os.path.join(init_path, 'music'))
+
+                
+        os.rename(old_file, new_file)
+
+    elif filename.endswith(extensions['archives']):
+        known_extensions.add(filename.split('.')[-1])
+
+        shutil.unpack_archive((os.path.join(old_folder, filename)), (os.path.join(init_path, 'archives', transliteration(filename).split('.')[0])) )
+
+    else:
+        unknown_extensions.add(filename.split('.')[-1])
+
 
 # walk(r'C:\Users\shevc\Desktop\XXX')
 
@@ -87,8 +122,29 @@ def transliteration (text):
 def goClean(args):
     if len(args) != 2:
         print('Enter the desired directory after the script name')
+        
         return
     else:
-        walk(args[1], args[1])
+        initial_directory = args[1]
+        walk(initial_directory, initial_directory)
+
+        print('{:^30}{}'.format('Unknown_extensions:', unknown_extensions))
+        print('{:^30}{}'.format('Known_extensions:', known_extensions))
+
+
+        if os.path.exists(os.path.join(initial_directory, 'images')):
+            print('{:^30}{}'.format('Images:', os.listdir(os.path.join(initial_directory, 'images') )))
+
+        if os.path.exists(os.path.join(initial_directory, 'videos')):
+            print('{:^30}{}'.format('Videos:', os.listdir(os.path.join(initial_directory, 'videos') )))
+
+        if os.path.exists(os.path.join(initial_directory, 'documents')):
+            print('{:^30}{}'.format('Documents:', os.listdir(os.path.join(initial_directory, 'documents') )))
+
+        if os.path.exists(os.path.join(initial_directory, 'music')):
+            print('{:^30}{}'.format('Music:', os.listdir(os.path.join(initial_directory, 'music') )))
+
+        if os.path.exists(os.path.join(initial_directory, 'archives')):
+            print('{:^30}{}'.format('Archives:', os.listdir(os.path.join(initial_directory, 'archives') )))
 
 goClean(sys.argv)
