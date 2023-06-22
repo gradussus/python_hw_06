@@ -145,7 +145,7 @@ def walk (path, init_path):
     else:
 
         for item in os.listdir(path):
-            if item in extensions:
+            if item in extensions or item == 'other':
                 continue
             
             if os.path.isdir(os.path.join(path, item)):
