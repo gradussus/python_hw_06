@@ -42,6 +42,9 @@ def goClean(args):
         if os.path.exists(os.path.join(initial_directory, 'archives')):
             print('{:^30}{}'.format('Archives:', os.listdir(os.path.join(initial_directory, 'archives') )))
 
+        if os.path.exists(os.path.join(initial_directory, 'other')):
+            print('{:^30}{}'.format('Other:', os.listdir(os.path.join(initial_directory, 'other') )))
+
 def transliteration (text):
 
     dict = {
@@ -126,6 +129,15 @@ def move_file(old_folder, filename, init_path ):
     else:
         unknown_extensions.add(filename.split('.')[-1])
 
+        old_file = os.path.join(old_folder, filename)
+        new_file = os.path.join(init_path, 'other' , transliteration(filename))
+
+        if not os.path.exists(os.path.join(init_path, 'other')):
+            os.makedirs(os.path.join(init_path, 'other'))
+
+                
+        os.rename(old_file, new_file)
+
 def walk (path, init_path):
     if os.listdir(path) == []:
         os.rmdir(path)
@@ -143,4 +155,6 @@ def walk (path, init_path):
                 move_file(path, item, init_path)
 
 
-goClean(sys.argv)
+if __name__ == '__main__':
+
+    goClean(sys.argv)
